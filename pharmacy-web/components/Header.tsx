@@ -1,12 +1,55 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export function Header() {
+  const [isScrolledDown, setIsScrolledDown] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Хедер скрывается при скролле вниз (после 100px)
+      // Хедер появляется только когда доскроллили до самого верха (<= 10px)
+      if (currentScrollY <= 10) {
+        // В самом верху страницы - показываем хедер
+        setIsScrolledDown(false);
+      } else if (currentScrollY > 100) {
+        // Проскроллили больше 100px - скрываем хедер
+        setIsScrolledDown(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, isMounted]);
+
+  // Используем isMounted для предотвращения ошибок гидратации
+  // Хедер скрыт если мы не в самом верху страницы
+  const shouldHide = isMounted && isScrolledDown;
+
   return (
     <header className="border-b bg-background sticky top-0 z-50">
       {/* Первый хедер */}
-      <div className="border-b">
+      <div
+        className={`border-b overflow-hidden transition-all duration-300 ease-in-out ${
+          shouldHide ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
+        }`}
+        suppressHydrationWarning
+      >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Логотип слева */}
