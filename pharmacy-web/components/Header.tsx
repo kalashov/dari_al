@@ -55,7 +55,7 @@ export function Header() {
             {/* Логотип слева */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <span className="text-xl font-bold text-primary">Аптека Онлайн</span>
+                <span className="text-xl font-bold text-primary">Dari al</span>
               </Link>
             </div>
 
