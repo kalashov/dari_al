@@ -1,145 +1,142 @@
-"use client";
-
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ProductCard } from "@/components/ProductCard";
-
-// Моковые данные товаров
-const mockProducts = [
-  {
-    id: "1",
-    name: "УТРОЖЕСТАН 200 мг №14 капс Прогестерон",
-    price: 12500,
-    imageUrl: undefined,
-  },
-  {
-    id: "2",
-    name: "НЕФРОСТЕН №60 таб Комплекс",
-    price: 8900,
-    imageUrl: undefined,
-  },
-  {
-    id: "3",
-    name: "DENTINALE NATURA 20 мл гель для десен Комплекс",
-    price: 3200,
-    imageUrl: undefined,
-  },
-  {
-    id: "4",
-    name: "FDP 5 г №1фл Фосфруктоза",
-    price: 4500,
-    imageUrl: undefined,
-  },
-  {
-    id: "5",
-    name: "Парацетамол 500 мг №20 таблетки",
-    price: 1200,
-    imageUrl: undefined,
-  },
-  {
-    id: "6",
-    name: "Ибупрофен 400 мг №20 таблетки",
-    price: 1500,
-    imageUrl: undefined,
-  },
-  {
-    id: "7",
-    name: "Аспирин Кардио 100 мг №30 таблетки",
-    price: 2800,
-    imageUrl: undefined,
-  },
-  {
-    id: "8",
-    name: "Амоксициллин 500 мг №16 капсулы",
-    price: 3500,
-    imageUrl: undefined,
-  },
-  {
-    id: "9",
-    name: "Витамин D3 2000 МЕ №60 капсулы",
-    price: 4200,
-    imageUrl: undefined,
-  },
-  {
-    id: "10",
-    name: "Омега-3 1000 мг №60 капсулы",
-    price: 5500,
-    imageUrl: undefined,
-  },
-  {
-    id: "11",
-    name: "Магний B6 №60 таблетки",
-    price: 3800,
-    imageUrl: undefined,
-  },
-  {
-    id: "12",
-    name: "Цинк 15 мг №30 таблетки",
-    price: 2100,
-    imageUrl: undefined,
-  },
-];
 
 export default function Home() {
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold mb-6">Каталог товаров</h1>
-
-        <div className="flex gap-6">
-          {/* Боковая панель с фильтрами */}
-          <aside className="w-64 shrink-0">
-            <Card>
-              <CardHeader>
-                <CardTitle>Фильтры</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Цена</label>
-                  <div className="space-y-2">
-                    <div>
-                      <Input
-                        type="number"
-                        placeholder="От"
-                        value={minPrice}
-                        onChange={(e) => setMinPrice(e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Input
-                        type="number"
-                        placeholder="До"
-                        value={maxPrice}
-                        onChange={(e) => setMaxPrice(e.target.value)}
-                      />
-                    </div>
-                  </div>
-        </div>
-              </CardContent>
-            </Card>
-          </aside>
-
-          {/* Основной контент с товарами */}
-          <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {mockProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  price={product.price}
-                  imageUrl={product.imageUrl}
-                />
-              ))}
+    <main className="min-h-screen">
+      {/* Hero секция */}
+      <section className="bg-gradient-to-r from-primary/10 to-primary/5 py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-5xl font-bold mb-6 text-foreground">
+              Аптека Онлайн
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              Широкий ассортимент лекарственных препаратов и медицинских товаров
+              с доставкой на дом
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button size="lg" asChild>
+                <Link href="/catalog">Перейти в каталог</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/delivery">Условия доставки</Link>
+              </Button>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Преимущества */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Почему выбирают нас
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Быстрая доставка</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Доставляем заказы в течение дня по всему городу
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Широкий ассортимент</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Более 10 000 наименований лекарств и медицинских товаров
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Гарантия качества</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Все товары сертифицированы и имеют необходимые лицензии
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Как заказать */}
+      <section className="py-16 bg-muted/50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Как сделать заказ
+          </h2>
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  1
+                </div>
+                <h3 className="font-semibold mb-2">Выберите товары</h3>
+                <p className="text-sm text-muted-foreground">
+                  Найдите нужные препараты в каталоге
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  2
+                </div>
+                <h3 className="font-semibold mb-2">Добавьте в корзину</h3>
+                <p className="text-sm text-muted-foreground">
+                  Выберите количество и добавьте товары
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  3
+                </div>
+                <h3 className="font-semibold mb-2">Оформите заказ</h3>
+                <p className="text-sm text-muted-foreground">
+                  Укажите адрес и контактные данные
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  4
+                </div>
+                <h3 className="font-semibold mb-2">Получите заказ</h3>
+                <p className="text-sm text-muted-foreground">
+                  Мы доставим в удобное для вас время
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Контакты */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-6">Свяжитесь с нами</h2>
+            <p className="text-muted-foreground mb-6">
+              Есть вопросы? Мы всегда готовы помочь!
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button variant="outline" asChild>
+                <a href="tel:+77777777777">+7 777 777 77 77</a>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/contacts">Контакты</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
