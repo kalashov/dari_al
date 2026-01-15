@@ -119,7 +119,7 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                </div>
+        </div>
               </CardContent>
             </Card>
           </aside>
@@ -139,7 +139,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
   );
 }
