@@ -7,7 +7,8 @@ public record AppConfig(
         String otpSecret,
         int otpTtlSeconds,
         int otpAttempts,
-        int httpPort
+        int httpPort,
+        String corsOrigin
 ) {
     public static AppConfig load() {
         String dbUrl = env("DB_URL", "jdbc:postgresql://localhost:5433/dari_al");
@@ -18,12 +19,13 @@ public record AppConfig(
         int ttl = envInt("OTP_TTL_SECONDS", 300);
         int attempts = envInt("OTP_ATTEMPTS", 5);
         int port = envInt("HTTP_PORT", 8080);
+        String corsOrigin = env("CORS_ORIGIN", "http://localhost:5173");
 
         if(otpSecret.length() < 12) {
             throw new IllegalStateException("OTP secret is too short");
         }
 
-        return new AppConfig(dbUrl, dbUser, dbPass, otpSecret, ttl, attempts, port);
+        return new AppConfig(dbUrl, dbUser, dbPass, otpSecret, ttl, attempts, port, corsOrigin);
     }
 
     private static String env(String key, String def) {

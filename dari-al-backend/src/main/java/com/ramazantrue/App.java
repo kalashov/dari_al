@@ -1,6 +1,7 @@
 package com.ramazantrue;
 
 import com.ramazantrue.api.ApiResponse;
+import com.ramazantrue.api.ApiError;
 import com.ramazantrue.api.GlobalExceptionHandler;
 import com.ramazantrue.config.AppConfig;
 import com.ramazantrue.config.DataSourceFactory;
@@ -9,7 +10,9 @@ import io.javalin.Javalin;
 import org.flywaydb.core.Flyway;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -27,12 +30,36 @@ public class App {
 
         Javalin app = Javalin.create(javalinConfig -> {
             javalinConfig.showJavalinBanner = false;
+
+            javalinConfig.bundledPlugins.enableCors(cors -> {
+                cors.addRule(rule -> {
+                    // Разрешаем запросы только с origin фронтенда.
+                    rule.allowHost(config.corsOrigin());
+                });
+            });
+        });
+
+        // Безопасные заголовки по умолчанию для всех ответов.
+        app.before(ctx -> {
+            ctx.header("X-Content-Type-Options", "nosniff");
         });
 
         GlobalExceptionHandler.register(app);
 
-        app.get("/health", ctx -> {
-            ctx.json(ApiResponse.ok(Map.of("status", "up")));
+        app.get("/health", ctx -> ctx.json(ApiResponse.ok(Map.of("status", "up"))));
+
+        app.get("/health/db", ctx -> {
+            try (var conn = dataSource.getConnection()) {
+                boolean valid = conn.isValid(2);
+                if (valid) {
+                    ctx.json(ApiResponse.ok(Map.of("status", "up")));
+                } else {
+                    ctx.status(503).json(ApiResponse.fail(ApiError.of("DB_UNAVAILABLE", "Database connection is not valid")));
+                }
+            } catch (SQLException e) {
+                LOG.log(Level.SEVERE, "DB health check failed", e);
+                ctx.status(503).json(ApiResponse.fail(ApiError.of("DB_UNAVAILABLE", "Database is not reachable")));
+            }
         });
 
         app.get("/", ctx -> {
