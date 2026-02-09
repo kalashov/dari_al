@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: dari-al-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dari_al
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: toor
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
