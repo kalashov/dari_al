@@ -20,8 +20,8 @@ public class HmacUtil {
         char[] hex = new char[bytes.length * 2];
         char[] digits = "0123456789abcdef".toCharArray();
         for(int i = 0; i < bytes.length; i ++) {
-            byte b = bytes[i];
-            hex[i * 2] = digits[(b >> 4)];
+            int b = bytes[i] & 0xFF; // Преобразуем байт в беззнаковое число 0-255
+            hex[i * 2] = digits[b >> 4];
             hex[i * 2 + 1] = digits[b & 0x0f];
         }
         return new String(hex);
